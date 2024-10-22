@@ -247,8 +247,20 @@ function getRectangleString(width, height) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const input = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+  return str.split('').map((char) => {
+    const index = input.indexOf(char);
+
+    // Если символ найден в алфавите
+    if (index !== -1) {
+      // eslint-disable-next-line no-mixed-operators
+      const newIndex = (index + 13) % 26 + (index >= 26 ? 26 : 0);
+      return input[newIndex];
+    }
+    return char;
+  }).join('');
 }
 
 /**
@@ -264,8 +276,8 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  return typeof value === 'string' || value instanceof String;
 }
 
 
@@ -293,8 +305,20 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  // eslint-disable-next-line comma-spacing, no-undef
+  const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+  const suits = ['♣', '♦', '♥', '♠'];
+
+  for (let i = 0; i < suits.length; i++) {
+    // eslint-disable-next-line no-shadow
+    for (let j = 0; j < ranks.length; j++) {
+      if (value === ranks[j] + suits[i]) {
+        return i * ranks.length + j;
+      }
+    }
+  }
+  return -1;
 }
 
 
